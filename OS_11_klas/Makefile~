@@ -1,2 +1,0 @@
-head : yulian.c
-	gcc yulian.c -o head
