@@ -47,6 +47,74 @@ public:
 		else if(tip==4)
 			tip_='S';
 	}
+
+	bool& operator>(kart& k) {
+		int k1,k2;
+		bool b;
+
+		if(karta_>'1' && karta_<='9')
+			k1=karta_;
+		else if(karta_=='T')
+			k1=58;
+		else if(karta_=='J')
+			k1=59;
+		else if(karta_=='Q')
+			k1=60;
+		else if(karta_=='K')
+			k1=61;
+		else if(karta_=='A')
+			k1=62;
+
+		if(k.get_karta()>'1' && k.get_karta()<='9')
+			k2=k.get_karta();
+		else if(k.get_karta()=='T')
+			k2=58;
+		else if(k.get_karta()=='J')
+			k2=59;
+		else if(k.get_karta()=='Q')
+			k2=60;
+		else if(k.get_karta()=='K')
+			k2=61;
+		else if(k.get_karta()=='A')
+			k2=62;
+
+		b=k1>k2;
+		return b;
+	}
+
+	bool& operator<(kart& k) {
+		int k1,k2;
+		bool b;
+
+		if(karta_>'1' && karta_<='9')
+			k1=karta_;
+		else if(karta_=='T')
+			k1=58;
+		else if(karta_=='J')
+			k1=59;
+		else if(karta_=='Q')
+			k1=60;
+		else if(karta_=='K')
+			k1=61;
+		else if(karta_=='A')
+			k1=62;
+
+		if(k.get_karta()>'1' && k.get_karta()<='9')
+			k2=k.get_karta();
+		else if(k.get_karta()=='T')
+			k2=58;
+		else if(k.get_karta()=='J')
+			k2=59;
+		else if(k.get_karta()=='Q')
+			k2=60;
+		else if(k.get_karta()=='K')
+			k2=61;
+		else if(k.get_karta()=='A')
+			k2=62;
+
+		b=k1<k2;
+		return b;
+	}
 };
 
 void deck(kart k[]) {
