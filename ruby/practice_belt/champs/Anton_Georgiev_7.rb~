@@ -1,0 +1,39 @@
+require 'csv'
+require 'csv'
+
+small_date=DateTime.parse("9999-12-31")
+big_date=DateTime.new
+date=[]
+i=0
+j=0
+
+CSV.foreach(ARGV[0]) do |row|
+	if big_date<DateTime.parse(row[2].split("date_")[1])
+		big_date=DateTime.parse(row[2].split("date_")[1])
+		break
+	end
+	i+=1
+end
+CSV.foreach(ARGV[0]) do |row|
+	if small_date>DateTime.parse(row[2].split("date_")[1])
+		small_date=DateTime.parse(row[2].split("date_")[1])
+		break
+	end
+	j+=1
+end
+
+k=0
+CSV.foreach(ARGV[0]) do |row|
+	if k==j || k==i
+		date << [row[0].split("champ_")[1].gsub("_"," "),row[2].split("date_")[1]]
+	end
+	k+=1
+end
+
+date=date.sort {|a,b| a[1] <=> b[1]}
+
+CSV.open("#{ARGV[0].chomp(".csv")}_result.csv","w") do |csv|
+	date.each do |element|
+		csv << element
+	end
+end

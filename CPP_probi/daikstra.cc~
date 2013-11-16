@@ -1,0 +1,19 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class edge {
+	int e,w;
+public:
+	
+
+class vertex {
+	vector<edge> v
+
+int main()
+{
+
+
+
+	return 0;
+}

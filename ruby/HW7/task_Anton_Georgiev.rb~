@@ -1,0 +1,6 @@
+require 'csv'
+
+CSV.open("result.csv","w") do |csv|
+	Dir.glob("*.rb") do |file|
+		`ruby #{file} 28.srt`
+		if
