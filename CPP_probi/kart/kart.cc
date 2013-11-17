@@ -48,9 +48,9 @@ public:
 			tip_='S';
 	}
 
-	bool& operator>(kart& k) {
+	bool operator>(kart& k) const {
 		int k1,k2;
-		bool b;
+		bool b=true;
 
 		if(karta_>'1' && karta_<='9')
 			k1=karta_;
@@ -78,11 +78,13 @@ public:
 		else if(k.get_karta()=='A')
 			k2=62;
 
-		b=k1>k2;
+		if(k1>k2)
+			b=true;
+		else b=false;
 		return b;
 	}
 
-	bool& operator<(kart& k) {
+	bool operator<(kart& k) const {
 		int k1,k2;
 		bool b;
 
@@ -112,7 +114,9 @@ public:
 		else if(k.get_karta()=='A')
 			k2=62;
 
-		b=k1<k2;
+		if(k1<k2)
+			b=true;
+		else b=false;
 		return b;
 	}
 };
@@ -190,7 +194,7 @@ void winner(kart p1[],kart p2[],int& b1,int& b2,int j) {
 	}
 }
 
-void war(kart p1[],kart p2[],int b1,int b2,int& i) {
+void war(kart p1[],kart p2[],int& b1,int& b2,int& i) {
 cout << "\n                   VOINA!!!\n\n";
 i++;
 getchar();
@@ -202,13 +206,13 @@ i++;
 getchar();
 writer(p1,p2,i);
 
-if(p1[i].get_karta()>p2[i].get_karta()) {
+if(p1[i]>p2[i]) {
 	winner(p1,p2,b1,b2,1);
 	winner(p1,p2,b1,b2,1);
 	winner(p1,p2,b1,b2,1);
 	winner(p1,p2,b1,b2,1);
 	getchar();
-}else if(p1[i].get_karta()<p2[i].get_karta()) {
+}else if(p1[i]<p2[i]) {
 	winner(p1,p2,b1,b2,2);
 	winner(p1,p2,b1,b2,2);
 	winner(p1,p2,b1,b2,2);

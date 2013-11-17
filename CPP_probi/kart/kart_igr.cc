@@ -22,9 +22,9 @@ int main()
 		writer(p1,p2,i);
 		cout << endl;
 		getchar();
-		if(p1[i].get_karta()>p2[i].get_karta())
+		if(p1[i]>p2[i])
 			winner(p1,p2,b1,b2,1);
-		else if(p1[i].get_karta()<p2[i].get_karta())
+		else if(p1[i]<p2[i])
 			winner(p1,p2,b1,b2,2);
 		else war(p1,p2,b1,b2,i);	
 	}
