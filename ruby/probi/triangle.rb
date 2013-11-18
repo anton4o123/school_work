@@ -16,7 +16,7 @@ el_svg.attributes["version"]="1.1"
 el_svg.attributes["xmlns"]="http://www.w3.org/2000/svg"
 
 line(el_svg,100,100,100,200,0,0,255)
-line(el_svg,100,500,200,200,red=255)
+line(el_svg,100,500,200,200,255)
 line(el_svg,100,500,100,200,0,255)
 
 File.open("triangle.svg","w") do |svg|
