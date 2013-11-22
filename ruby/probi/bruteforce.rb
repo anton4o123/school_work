@@ -1,6 +1,7 @@
 require 'time'
 def bruteforce pass_expect,pass="",len=1
 	i=0
+	j=0
 	while i<62
 		if i<26
 			c=(i+97).chr
@@ -11,20 +12,20 @@ def bruteforce pass_expect,pass="",len=1
 		end
 		if pass_expect==pass+c
 			puts pass+c
-			i=101
+			j=101
 			break
 		end
 		if (pass+c).length<len
-			i=bruteforce pass_expect,pass+c,len
+			j=bruteforce pass_expect,pass+c,len
 		end
-		if i>100
+		if j>100
 			break
 		end
 		i+=1
 	end
-	return i
+	return j
 end
 
 d=Time.now
-bruteforce ARGV[0],"",ARGV[1].to_i
+j=bruteforce ARGV[0],"",ARGV[1].to_i
 puts Time.now-d
