@@ -15,9 +15,7 @@ def bruteforce pass_expect,pass="",len=1
 			break
 		end
 		if (pass+c).length<len
-			bruteforce pass_expect,pass+c,len
-			puts 'ho'
-			puts i
+			i=bruteforce pass_expect,pass+c,len
 		end
 		if i>100
 			break
