@@ -34,6 +34,21 @@ void post_binary(list<double>& context,double(*binary_op)(double,double)) {
 	
 	double res=binary_op(val1,val2);
 	context.push_back(res);
+	
+	cout << "res: " << context.back() << endl;
+}
+
+void parse_double(const string& token,list<double>& context) {
+	istringstream in(token);
+	double val=0.0;
+	if(!in) {
+		cout << "OOPS: can't parse double: " << token << endl;
+		return;
+	} else {
+		in >> val;
+	}
+	
+	context.push_back(val);
 }
 
 int main() {
@@ -55,6 +70,8 @@ int main() {
 			post_binary(context,binary_mult);
 		} else if(token=="/") {
 			post_binary(context,binary_div);
+		} else {
+			parse_double(token,context);
 		}
 	}
 
