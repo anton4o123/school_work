@@ -22,7 +22,7 @@ class GraphDrawer
 		calculate_positions
 		draw_vertexes
 		draw_edges
-	end	
+	end
 	
 	private
 	def sin_cos deg,check
