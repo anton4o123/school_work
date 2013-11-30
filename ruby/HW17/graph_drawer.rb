@@ -2,7 +2,7 @@ require_relative 'drawer'
 require_relative 'vertex'
 require_relative 'csv_graph'
 
-d = Drawer.new "graph.svg", 300, 300
+d = Drawer.new "Anton_Georgiev.svg", 300, 300
 d.start
 
 class GraphDrawer
@@ -80,7 +80,7 @@ class GraphDrawer
 end
 
 graph = GraphDrawer.new d
-v=CSV_to_graph.new "abc.csv"
+v=CSV_to_graph.new ARGV[0]
 graph.vs=v.create_vs
 graph.edges=v.create_edges
 graph.draw
