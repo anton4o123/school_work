@@ -1,4 +1,5 @@
 require 'csv'
+require_relative 'vertex'
 
 class CSV_to_graph
 	attr_accessor :vs
