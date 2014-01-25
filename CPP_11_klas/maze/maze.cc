@@ -123,7 +123,11 @@ public:
 			return;
 		}
 		Cell& n=get_neighbour(row, col, dir);
-		Direction ndir;
+		Direction ndir=dir;
+		if(dir==UP || dir==LEFT)
+			ndir << 2;
+		else ndir >> 2;
+		n.unset_wall(ndir);
 		// ??????
 		// FIND OPOSITE DIRECTION
 		// UNSET NEIGHBOUR WALL
@@ -136,8 +140,9 @@ int main() {
 	Cell& c0=b.get_cell(10,10);
 	Cell& c1=b.get_cell(11,10);
 	
-	c0.unset_wall(UP);
-	c1.unset_wall(DOWN);
+//	c0.unset_wall(UP);
+//	c1.unset_wall(DOWN);
+	b.drill_wall(10,10,UP);
 	
 	b.draw(cout);
 
