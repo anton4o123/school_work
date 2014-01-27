@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 enum Direction {
@@ -16,6 +18,7 @@ class Cell {
 	unsigned int walls_;
 	unsigned int row_;
 	unsigned int col_;
+	bool visited_;
 	
 	string draw_wall(bool has_wall) const {
 		return has_wall?" rlineto":" rmoveto";
@@ -25,8 +28,18 @@ public:
 		unsigned int walls=UP|LEFT|DOWN|RIGHT)
 	: walls_(walls),
 	  row_(row),
-	  col_(col)
+	  col_(col),
+	  visited_(false)
 	{}
+	
+	Cell& visit() {
+		visited_=true;
+		return *this;
+	}
+	
+	bool is_visited() const {
+		return visited_;
+	}
 	
 	bool has_wall(Direction dir) const {
 		return dir & walls_;
@@ -115,6 +128,15 @@ public:
 		return get_cell(nr,nc);
 	}
 	
+	const Cell& get_neighbour(unsigned row, unsigned col, Direction dir) const {
+		if(! has_neighbour(row, col, dir)) {
+			throw BoardError();
+		}
+		unsigned nr= (dir==UP)? row+1:((dir==DOWN)? row-1: row);
+		unsigned nc= (dir==RIGHT)? col+1: ((dir==LEFT)? col-1:col);
+		return get_cell(nr,nc);
+	}
+	
 	void drill_wall(unsigned row, unsigned col, Direction dir) {
 		Cell& c=get_cell(row, col);
 		c.unset_wall(dir);
@@ -124,27 +146,90 @@ public:
 		}
 		Cell& n=get_neighbour(row, col, dir);
 		Direction ndir=dir;
-		if(dir==UP || dir==LEFT)
-			ndir << 2;
-		else ndir >> 2;
+		switch(dir) {
+			case UP:
+				ndir=DOWN;
+				break;
+			case LEFT:
+				ndir=RIGHT;
+				break;
+			case DOWN:
+				ndir=UP;
+				break;
+			case RIGHT:
+				ndir=LEFT;
+				break;
+			default:
+				throw BoardError();
+		}
 		n.unset_wall(ndir);
 		// ??????
 		// FIND OPOSITE DIRECTION
 		// UNSET NEIGHBOUR WALL
 	}
+private:
+	const static Direction DIRECTIONS[];//={UP,LEFT,RIGHT,DOWN};
+	const static int DSIZE=4;
+	
+public:
+	Direction has_unvisited_neighbour(int row, int col) const {
+		for(int i=0;i<DSIZE;++i) {
+			Direction d=DIRECTIONS[i];
+			if(has_neighbour(row,col,d)) {
+				const Cell& c=get_neighbour(row,col,d);
+				if(!c.is_visited()) {
+					return d;
+				}
+			}
+		}
+		
+		return NONE;
+	}
+	
+	Direction get_random_unvisited_neighbour(int row,int col) const {
+		if(!has_unvisited_neighbour(row,col)) {
+			return NONE;
+		}
+		
+		while(true) {
+			int ind=rand()%DSIZE;
+			Direction d=DIRECTIONS[ind];
+			if(has_neighbour(row,col,d)) {
+				const Cell& c=get_neighbour(row,col,d);
+				if(!c.is_visited()) {
+					return d;
+				}
+			}
+		}
+	}
+	
+	void generate(int row, int col) {
+		Cell& c=get_cell(row, col);
+		c.visit();
+		
+		while(true) {
+			Direction dir=get_random_unvisited_neighbour(row,col);
+			if(dir==NONE) {
+				return;
+			}
+			drill_wall(row,col,dir);
+			Cell& n=get_neighbour(row,col,dir);
+			generate(n.get_row(),n.get_col());
+		}
+	}
+	
 };
 
+const Direction Board::DIRECTIONS[]={UP,LEFT,RIGHT,DOWN};
+
 int main() {
+	srand((unsigned)time(NULL));
 	Board b(20, 20);
 	
-	Cell& c0=b.get_cell(10,10);
-	Cell& c1=b.get_cell(11,10);
-	
-//	c0.unset_wall(UP);
-//	c1.unset_wall(DOWN);
-	b.drill_wall(10,10,UP);
+	b.generate(0,0);
 	
 	b.draw(cout);
+
 
 	return 0;
 }
