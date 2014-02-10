@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <cstdio>
 using namespace std;
 
 enum Direction {
@@ -37,6 +38,11 @@ public:
 		return *this;
 	}
 	
+	Cell& unvisit() {
+		visited_=false;
+		return *this;
+	}
+	
 	bool is_visited() const {
 		return visited_;
 	}
@@ -47,7 +53,7 @@ public:
 
 	Cell& set_wall(Direction dir) {
 		walls_ |= dir;	
-		return *this;
+			return *this;
 	}
 	
 	Cell& unset_wall(Direction dir) {
@@ -72,7 +78,30 @@ public:
 	}
 };
 
-class BoardError{};
+	class BoardError{};
+
+	Direction n_dir(Direction dir) {
+		Direction ndir;
+		
+		switch(dir) {
+			case UP:
+				ndir=DOWN;
+				break;
+			case LEFT:
+				ndir=RIGHT;
+				break;
+			case DOWN:
+				ndir=UP;
+				break;
+			case RIGHT:
+				ndir=LEFT;
+				break;
+			default:
+				throw BoardError();
+		}
+		
+		return ndir;
+	}
 
 class Board {
 	unsigned width_;
@@ -99,12 +128,12 @@ public:
 	
 	void draw(ostream& out) const {
 		out << "newpath" << endl;
+		
 		for(vector<Cell>::const_iterator it=cells_.begin(); it!=cells_.end(); it++) {
 			(*it).draw(out);
 		}
 		
-		out << "stroke" << endl;
-		out << "showpage" << endl;
+		out << "closepath" << endl;
 	}
 	
 	bool has_neighbour(unsigned row, unsigned col, Direction dir) const {
@@ -145,23 +174,7 @@ public:
 			return;
 		}
 		Cell& n=get_neighbour(row, col, dir);
-		Direction ndir=dir;
-		switch(dir) {
-			case UP:
-				ndir=DOWN;
-				break;
-			case LEFT:
-				ndir=RIGHT;
-				break;
-			case DOWN:
-				ndir=UP;
-				break;
-			case RIGHT:
-				ndir=LEFT;
-				break;
-			default:
-				throw BoardError();
-		}
+		Direction ndir=n_dir(dir);
 		n.unset_wall(ndir);
 		// ??????
 		// FIND OPOSITE DIRECTION
@@ -170,7 +183,7 @@ public:
 private:
 	const static Direction DIRECTIONS[];//={UP,LEFT,RIGHT,DOWN};
 	const static int DSIZE=4;
-	
+		
 public:
 	Direction has_unvisited_neighbour(int row, int col) const {
 		for(int i=0;i<DSIZE;++i) {
@@ -186,6 +199,35 @@ public:
 		return NONE;
 	}
 	
+	Direction has_unvisited_neighbour_wall(int row, int col) const {
+		for(int i=0;i<DSIZE;++i) {
+			Direction d=DIRECTIONS[i];
+			if(has_neighbour(row,col,d)) {
+				const Cell& c=get_neighbour(row,col,d);
+				if((!c.is_visited()) && (!c.has_wall(n_dir(d)))) {
+					return d;
+				}
+			}
+		}
+		
+		return NONE;
+	}
+	
+	int how_many_unvisited_neighbours(int row, int col) const {
+		int j=0;
+		for(int i=0;i<DSIZE;++i) {
+			Direction d=DIRECTIONS[i];
+			if(has_neighbour(row,col,d)) {
+				const Cell& c=get_neighbour(row,col,d);
+				if((!c.is_visited()) && (!c.has_wall(n_dir(d)))) {
+					j++;
+				}
+			}
+		}
+		
+		return j;
+	}
+	
 	Direction get_random_unvisited_neighbour(int row,int col) const {
 		if(!has_unvisited_neighbour(row,col)) {
 			return NONE;
@@ -197,6 +239,23 @@ public:
 			if(has_neighbour(row,col,d)) {
 				const Cell& c=get_neighbour(row,col,d);
 				if(!c.is_visited()) {
+					return d;
+				}
+			}
+		}
+	}
+	
+	Direction get_random_unvisited_neighbour_wall(int row,int col) const {
+		if(!has_unvisited_neighbour_wall(row,col)) {
+			return NONE;
+		}
+		
+		while(true) {
+			int ind=rand()%DSIZE;
+			Direction d=DIRECTIONS[ind];
+			if(has_neighbour(row,col,d)) {
+				const Cell& c=get_neighbour(row,col,d);
+				if((!c.is_visited()) && (!c.has_wall(n_dir(d)))) {
 					return d;
 				}
 			}
@@ -218,18 +277,80 @@ public:
 		}
 	}
 	
+	void unvisit_all() {
+		for(int i=0;i<height_;i++)
+			for(int j=0;j<width_;j++) {
+				Cell& c=get_cell(i, j);
+				c.unvisit();
+			}
+	}
+	
+	void draw_path(int start_row, int start_col, int end_row, int end_col,ostream& out) {
+		int crosscells[100][2];
+		int path[400][2];
+		int k[400];
+		int i=-1,j=-1,row=start_row,col=start_col;
+		Cell& c=get_cell(start_row,start_col);
+		unvisit_all();
+		c.visit();
+		
+		while(true) {
+			j++;
+			row=path[j][0]=c.get_row();
+			col=path[j][1]=c.get_col();
+			
+			if(row==end_row && col==end_col) {
+				break;
+			}
+			
+			if(how_many_unvisited_neighbours(row,col)>1) {
+				i++;
+				k[i]=j;
+				crosscells[i][0]=c.get_row();
+				crosscells[i][1]=c.get_col();
+			}
+
+			if(how_many_unvisited_neighbours(row,col)==0) {
+				row=crosscells[i][0];
+				col=crosscells[i][1];
+				if(how_many_unvisited_neighbours(row,col)==1) {
+					j=k[i];
+					i--;
+				}
+				continue;
+			}
+
+			Direction dir=get_random_unvisited_neighbour_wall(row,col);
+			if(dir==NONE) {
+				break;
+			}
+			c=get_neighbour(row,col,dir);
+			c.visit();
+		//	cout << c.is_visited() << endl;
+		}
+		
+		out << "stroke" << endl;
+		out << "30 30 moveto" << endl;
+		out << "1 0 0 setrgbcolor" << endl;
+		for(i=1;i<=j;i++) {
+			out << (path[i][1]-path[i-1][1])*20 << ' ' << (path[i][0]-path[i-1][0])*20 << " rlineto" << endl;
+		}
+		
+		out << "stroke" << endl;
+		out << "showpage" << endl;
+	}
 };
 
 const Direction Board::DIRECTIONS[]={UP,LEFT,RIGHT,DOWN};
 
 int main() {
 	srand((unsigned)time(NULL));
-	Board b(20, 20);
+	Board b(20,20);
 	
 	b.generate(0,0);
 	
 	b.draw(cout);
-
+	b.draw_path(0,0,2,2,cout);
 
 	return 0;
 }
