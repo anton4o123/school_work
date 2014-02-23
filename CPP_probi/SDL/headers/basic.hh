@@ -6,6 +6,7 @@
 #include "SDL/SDL_ttf.h"
 #include "SDL/SDL_mixer.h"
 #include <iostream>
+#include <string>
 
 const int SCREEN_WIDTH=640;
 const int SCREEN_HEIGHT=480;
