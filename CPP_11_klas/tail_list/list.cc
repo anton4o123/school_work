@@ -15,23 +15,24 @@ class List {
 public:
 	List()
 	: head_(0), tail_(0) {
-//		head_->next_=tail_;
+	//	head_->next_=tail_;
 	}
 	
 	bool empty() {
-		return head_==0 && tail_==0;
+		return head_==0;
 	}
 	
 	void push_front(T val) {
 		Node* new_node=new Node(val);
 		
 		if(!empty()) {
-			new_node->next_=head_->next_;
-			head_->next_=new_node;
+			new_node->next_=head_;
+			head_=new_node;
+			tail_->next_=new_node;
 		} else {
 			new_node->next_=tail_;
-			head_->next_=new_node;
-			tail_->next_=new_node;
+			head_=new_node;
+			tail_=new_node;
 		}
 	}
 	
@@ -39,20 +40,52 @@ public:
 		Node* new_node=new Node(val);
 		
 		if(!empty()) {
-			//need to finish
+			new_node->next_=head_;
+			tail_->next_=new_node;
+			tail_=new_node;
 		} else {
 			new_node->next_=tail_;
-			head_->next_=new_node;
-			tail_->next_=new_node;
+			head_=new_node;
+			tail_=new_node;
 		}
 	}
+	
+	T front() {
+		return head_->data_;
+	}
+	
+	T back() {
+		return tail_->data_;
+	}
+	
+	T pop_front() {
+		Node* del_node=head_;
+		T value=head_->data_;
+		
+		head_=head_->next_;
+		delete del_node;
+		return value;
+	}
+	
+/*	T pop_back() {
+		Node* del_node=tail_;
+		T value=tail_->data_;
+		
+		tail_
+	}*/
 };
 
 int main() {
 	List<int> l1;
 	
 	cout << l1.empty() << endl;
-	l1.push_front(6);
+	l1.push_back(6);
+	l1.push_back(5);
+	cout << l1.empty() << endl;
+	cout << l1.front() << endl;
+	cout << l1.back() << endl;
+	cout << l1.pop_front() << endl;
+	cout << l1.pop_front() << endl;
 	cout << l1.empty() << endl;
 
 	return 0;
