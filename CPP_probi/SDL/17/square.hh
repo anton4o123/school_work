@@ -1,12 +1,13 @@
-#ifndef DOT_HH__
-#define DOT_HH__
+#ifndef SQUARE_HH__
+#define SQUARE_HH__
 
 #include "../headers/basic.hh"
 
-class Dot {
-	int x, y, xVel, yVel;
+class Square {
+	SDL_Rect box;
+	int xVel, yVel;
 public:
-	Dot();
+	Square();
 	void handle_input();
 	void move();
 	void show();
