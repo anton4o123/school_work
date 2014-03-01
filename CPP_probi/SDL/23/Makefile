@@ -7,7 +7,7 @@ writing.o: string_input.hh writing.cc
 	g++ -c writing.cc
 
 input: basic.o writing.o
-	g++ writing.cc -o input -lSDL -lSDL_image -lSDL_ttf
+	g++ basic.o writing.o -o input -lSDL -lSDL_image -lSDL_ttf
 
 clean:
 	rm -rf *.o

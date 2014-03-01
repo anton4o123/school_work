@@ -14,8 +14,5 @@ const int SCREEN_BPP=32;
 
 SDL_Surface* load_image(std::string filename);
 void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
-bool init();
-bool load_files();
-void clean_up();
 
 #endif
