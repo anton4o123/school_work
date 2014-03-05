@@ -57,7 +57,9 @@ void set_clips() {
 
 Foo::Foo() {
 	offSet=0;
+	offSet_up=SCREEN_HEIGHT-FOO_HEIGHT;
 	velocity=0;
+	velocity_up=0;
 	frame=0;
 	status=FOO_RIGHT;
 }
@@ -67,11 +69,13 @@ void Foo::handle_events() {
 		switch(event.key.keysym.sym) {
 			case SDLK_RIGHT: velocity+=FOO_WIDTH/4;break;
 			case SDLK_LEFT: velocity-=FOO_WIDTH/4;break;
+			case SDLK_SPACE: velocity_up-=20;break;
 		}
 	} else if(event.type==SDL_KEYUP) {
 		switch(event.key.keysym.sym) {
 			case SDLK_RIGHT: velocity-=FOO_WIDTH/4;break;
 			case SDLK_LEFT: velocity+=FOO_WIDTH/4;break;
+			case SDLK_SPACE: velocity_up+=20;break;
 		}
 	}
 }
@@ -80,6 +84,12 @@ void Foo::move() {
 	offSet+=velocity;
 	if(offSet<0 || offSet+FOO_WIDTH>SCREEN_WIDTH) {
 		offSet-=velocity;
+	}
+	
+	offSet_up+=velocity_up;
+	velocity_up=0;
+	if(offSet_up<SCREEN_HEIGHT-FOO_HEIGHT-20 || offSet_up>SCREEN_HEIGHT-FOO_HEIGHT) {
+		offSet_up-=velocity_up;
 	}
 }
 
@@ -99,9 +109,9 @@ void Foo::show() {
 	}
 	
 	if(status==FOO_RIGHT) {
-		apply_surface(offSet, SCREEN_HEIGHT-FOO_HEIGHT, foo, screen, &clipsRight[frame]);
+		apply_surface(offSet, offSet_up, foo, screen, &clipsRight[frame]);
 	} else if(status==FOO_LEFT) {
-		apply_surface(offSet, SCREEN_HEIGHT-FOO_HEIGHT, foo, screen, &clipsLeft[frame]);
+		apply_surface(offSet, offSet_up, foo, screen, &clipsLeft[frame]);
 	}
 }
 

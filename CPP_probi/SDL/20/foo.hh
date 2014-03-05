@@ -4,7 +4,7 @@
 #include "../headers/basic.hh"
 
 class Foo {
-	int offSet, velocity, frame, status;
+	int offSet, offSet_up, velocity, velocity_up, frame, status;
 public:
 	Foo();
 	void handle_events();
