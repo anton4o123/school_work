@@ -3,7 +3,7 @@
 
 const int DOT_WIDTH=20;
 const int FRAMES_PER_SECOND=60;
-const int SPEED=20;
+const int SPEED=10;
 
 SDL_Surface* screen=NULL;
 SDL_Surface* dot=NULL;
