@@ -4,12 +4,12 @@
 #include <time.h>
 #define SIZE 10000
 
-int cmp(void* n1, void* n2) {
+int cmp(const void* n1, const void* n2) {
 	return (*(int*)n1)-(*(int*)n2);
 }
 
 void* merge_sort(void* arr) {
-	qsort((int*)arr, SIZE/2, sizeof(int), (void*)cmp);
+	qsort((int*)arr, SIZE/2, sizeof(int), cmp);
 	return (void*)0;
 }
 
