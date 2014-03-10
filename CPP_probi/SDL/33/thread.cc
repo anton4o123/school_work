@@ -67,5 +67,6 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
+	clean_up();
 	return 0;
 }
