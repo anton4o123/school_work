@@ -15,5 +15,19 @@ int main() {
 	cout << "m[four]=" << m["four"] << endl;
 	cout << "m.size()=" << m.size() << endl;
 	
+	map<string, int>::iterator it=m.find("five");
+	if(it!=m.end()) {
+		cout << "Element found..." << endl;
+	} else {
+		cout << "Element 'five' not found..." << endl;
+	}
+	
+	it=m.find("two");
+	if(it!=m.end()) {
+		cout << "element 'two' found..." << endl;
+		cout << "key: " << (*it).first << endl;
+		cout << "val: " << (*it).second << endl;
+	}
+	
 	return 0;
 }
