@@ -1,10 +1,11 @@
-#ifndef basic
-#define basic
+#ifndef BASIC_HH__
+#define BASIC_HH__
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_ttf.h"
 #include "SDL/SDL_mixer.h"
+#include "SDL/SDL_opengl.h"
 #include <iostream>
 #include <string>
 
