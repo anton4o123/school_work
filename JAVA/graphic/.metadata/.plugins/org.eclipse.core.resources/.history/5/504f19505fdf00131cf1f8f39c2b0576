@@ -1,0 +1,26 @@
+//package org.elsys.graphics_2014_11a
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+public class MainClass {
+	public static void main(String[] args) {
+		Display d=new Display();
+		Shell shell=new Shell(d);
+		shell.setLayout(new FillLayout());
+		
+		Canvas c=new Canvas(shell, SWT.NONE);
+		c.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		shell.open();
+		
+		while(!shell.isDisposed()) {
+			if(!d.readAndDispatch()) {
+				d.sleep();
+			}
+		}
+		d.dispose();
+	}
+}

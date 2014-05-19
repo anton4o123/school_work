@@ -1,0 +1,62 @@
+//package org.elsys.graphics_2014_11a
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+public class MainClass {
+	public static void main(String[] args) {
+		Display d=new Display();
+		Shell shell=new Shell(d);
+		shell.setLayout(new FillLayout());
+		
+		Canvas c=new Canvas(shell, SWT.NONE);
+		c.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		shell.open();
+		
+		createPaintListener(c);
+		createMouseListener(c);
+		while(!shell.isDisposed()) {
+			if(!d.readAndDispatch()) {
+				d.sleep();
+			}
+		}
+		d.dispose();
+	}
+
+	private static void createMouseListener(final Canvas c) {
+		c.addMouseListener(new MouseListener() {
+			
+			public void mouseUp(MouseEvent e) {
+				GC gc=new GC(c);
+				gc.drawOval(e.x, e.y, 10, 10);
+				gc.dispose();
+			}
+			
+			public void mouseDown(MouseEvent e) {
+				
+			}
+			
+			public void mouseDoubleClick(MouseEvent e) {
+				
+			}
+		});
+	}
+
+	private static void createPaintListener(Canvas c) {
+		c.addPaintListener(new PaintListener() {
+			
+			public void paintControl(PaintEvent e) {
+				GC gc=e.gc;
+				gc.drawOval(100, 100, 40, 40);
+			}
+		});
+	}
+}
