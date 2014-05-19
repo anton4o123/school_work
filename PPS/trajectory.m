@@ -31,8 +31,14 @@ else
 	end
 end
 
+g=9.8;
+
 fx=-0.5*1.225*vx*vx*dc*a;
-fy=-m*9.8+0.5*1.225*vy*vy*dc*a;
+if angle_>0
+	fy=-m*g-0.5*1.225*vy*vy*dc*a;
+else
+	fy=-m*g+0.5*1.225*vy*vy*dc*a;
+end
 
 vrxv=[rx];
 vryv=[ry];
@@ -40,8 +46,8 @@ vryv=[ry];
 t=0;
 while(ry>0)
 	t+=dt;
-	rx+=(vx/m)*dt;
-	ry+=(vy/m)*dt;
+	rx+=vx*dt;
+	ry+=vy*dt;
 	vx+=(fx/m)*dt;
 	vy+=(fy/m)*dt;
 	
@@ -49,11 +55,15 @@ while(ry>0)
 	vryv=[vryv ry];
 	
 	fx=-0.5*1.225*vx*vx*dc*a;
-	fy=-m*9.8+0.5*1.225*vy*vy*dc*a;
+	if vy<=0
+		fy=-m*g+0.5*1.225*vy*vy*dc*a;
+	else
+		fy=-m*g-0.5*1.225*vy*vy*dc*a;
+	end
 end
 
-rx+=0
-ry+=0
-t+=0
+disp(rx)
+disp(ry)
+disp(t)
 plot(vrxv, vryv)
 pause
