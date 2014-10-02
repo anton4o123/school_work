@@ -10,7 +10,7 @@ scrolling.o: dot.hh scrolling.cc
 	g++ -c scrolling.cc
 
 camera: basic.o timer.o scrolling.o
-	g++ basic.o timer.o scrolling.o -o camera -lSDL_image
+	g++ basic.o timer.o scrolling.o -o camera -lSDL -lSDL_image
 
 clean:
 	rm -rf *.o

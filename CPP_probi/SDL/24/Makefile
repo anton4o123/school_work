@@ -10,7 +10,7 @@ save.o: dot.hh save.cc
 	g++ -c save.cc
 
 game: basic.o timer.o save.o
-	g++ basic.o timer.o save.o -o game -lSDL_image
+	g++ basic.o timer.o save.o -o game -lSDL -lSDL_image
 
 clean:
 	rm -rf *.o

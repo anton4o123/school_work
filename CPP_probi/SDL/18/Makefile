@@ -10,7 +10,7 @@ perpixel.o: dot.hh perpixel.cc
 	g++ -c perpixel.cc
 
 dot: basic.o timer.o perpixel.o
-	g++ basic.o timer.o perpixel.o -o dot -lSDL_image
+	g++ basic.o timer.o perpixel.o -o dot -lSDL -lSDL_image
 
 clean:
 	rm -rf *.o
