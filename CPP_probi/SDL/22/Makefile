@@ -10,7 +10,7 @@ scrolling.o: scrolling.cc
 	g++ -c scrolling.cc
 
 screen: basic.o timer.o scrolling.o
-	g++ basic.o timer.o scrolling.o -o screen -lSDL_image
+	g++ basic.o timer.o scrolling.o -o screen -lSDL -lSDL_image
 
 clean:
 	rm -rf *.o
