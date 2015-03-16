@@ -25,7 +25,7 @@ void main() {
 	char key[20];
 	char salt[13] = "$6$I0F5LtVX$";
 	char result[87];
-	char expected[87];
+	char expected[99] = "\0";
 	char set[27] = "abcdefghijklmnopqrstuvwxyz";
 	long char_index;
 //	static char *data[128];
@@ -35,7 +35,7 @@ void main() {
 
 //	printf("%s\n", crypt(key, salt));
 
-	strcat(expected, "$6$I0F5LtVX$vLRyhrfUf8NVT/ZLyZMKQmuTxMd18smssZ9cuQbjWM6Tuq7GVkeHC33Xgqo5PQfW8f65OtmPJtj1/zCMBZvcR.");
+	strcat(expected, "$6$I0F5LtVX$GvWOOHQS2mlaMtxVyNeLL1ELRm7w8xWo0awEcKvigRqpWxUH2enq3kW1HSkTvmNlj6.6KxKUgoIO5o2jft2OG/");
 	scanf("%ld", &index_num);
 	signal(SIGINT, int_handler);
 	
@@ -44,7 +44,6 @@ void main() {
 		result[0] = '\0';
 		while(1) {
 			strncat(result, &set[char_index % 26], 1);
-	//		printf("%ld %ld\n", char_index, index_num);
 			if(char_index < 26) {
 				break;
 			}
