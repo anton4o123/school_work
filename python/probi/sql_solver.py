@@ -2,6 +2,9 @@ import re
 
 tables = []
 
+LINE_STEP = 1
+SPLIT_FIELDS = ':'
+
 def create_task_one(file_lines):	
 	table_statements = [item for item in file_lines if re.match('Create table', item)]
 
@@ -9,13 +12,13 @@ def create_task_one(file_lines):
 		line = [item for item in file_lines if re.match(i, item)][0]
 		statement = line.split('with')[0] + '('
 		statement += 'id int(11) auto_increment primary key,'
-		statement += file_lines[file_lines.index(i) + 1]
+		statement += file_lines[file_lines.index(i) + LINE_STEP]
 		
 		change_list = list(statement)
 		change_list[-1] = ')'
 		statement = ''.join(change_list)
 		
-		statement = statement.replace(':', ' ')
+		statement = statement.replace(SPLIT_FIELDS, ' ')
 		statement = statement.replace('\t', '')
 		
 		tables.append(statement.split(' ')[2])
